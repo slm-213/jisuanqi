@@ -153,7 +153,35 @@ public:
                 continue;
             }
             
+            // 处理数字（包括负数）
             if (std::isdigit(c) || c == '.') {
+                std::string numStr;
+                while (i < processedExpression.length() && 
+                       (std::isdigit(processedExpression[i]) || processedExpression[i] == '.')) {
+                    numStr += processedExpression[i];
+                    i++;
+                }
+                
+                if (numStr.empty() || numStr == ".") {
+                    throw std::runtime_error("Invalid number format");
+                }
+                
+                try {
+                    double num = std::stod(numStr);
+                    operandStack.push(num);
+                } catch (const std::exception&) {
+                    throw std::runtime_error("Invalid number format");
+                }
+            }
+            // 处理负数
+            else if (c == '-' && (i == 0 || processedExpression[i-1] == '(' || 
+                     processedExpression[i-1] == '+' || processedExpression[i-1] == '-' || 
+                     processedExpression[i-1] == '*' || processedExpression[i-1] == '/')) {
+                i++; // 跳过负号
+                if (i >= processedExpression.length()) {
+                    throw std::runtime_error("Invalid expression");
+                }
+                
                 // 读取数字
                 std::string numStr;
                 while (i < processedExpression.length() && 
@@ -162,13 +190,12 @@ public:
                     i++;
                 }
                 
-                // 验证数字格式
                 if (numStr.empty() || numStr == ".") {
                     throw std::runtime_error("Invalid number format");
                 }
                 
                 try {
-                    double num = std::stod(numStr);
+                    double num = -std::stod(numStr);
                     operandStack.push(num);
                 } catch (const std::exception&) {
                     throw std::runtime_error("Invalid number format");
