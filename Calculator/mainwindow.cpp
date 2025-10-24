@@ -162,6 +162,10 @@ void MainWindow::onDecimalClicked()//小数点点击
         
         if (!lastNumber.contains('.')) {//若最后一个数字无小数点就添加
             currentExpression += ".";
+        } else {
+            // 如果已经包含小数点，显示错误提示
+            showError("数字中不能包含多个小数点");
+            return;
         }
     }
     updateDisplay();//更新显示
