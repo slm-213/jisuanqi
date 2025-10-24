@@ -49,6 +49,7 @@ public:
     QPushButton *decimalButton;
     QPushButton *equalsButton;
     QPushButton *addButton;
+    QPushButton *squareButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -224,6 +225,11 @@ public:
 
         buttonLayout->addWidget(addButton, 4, 3, 1, 1);
 
+        squareButton = new QPushButton(centralwidget);
+        squareButton->setObjectName("squareButton");
+
+        buttonLayout->addWidget(squareButton, 5, 0, 1, 1);
+
 
         verticalLayout->addLayout(buttonLayout);
 
@@ -285,6 +291,8 @@ public:
         equalsButton->setObjectName(QCoreApplication::translate("MainWindow", "operatorButton", nullptr));
         addButton->setText(QCoreApplication::translate("MainWindow", "+", nullptr));
         addButton->setObjectName(QCoreApplication::translate("MainWindow", "operatorButton", nullptr));
+        squareButton->setText(QCoreApplication::translate("MainWindow", "x\302\262", nullptr));
+        squareButton->setObjectName(QCoreApplication::translate("MainWindow", "functionButton", nullptr));
     } // retranslateUi
 
 };

@@ -285,6 +285,16 @@ QPushButton#functionButton:hover {
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="squareButton">
+        <property name="text">
+         <string>x²</string>
+        </property>
+        <property name="objectName">
+         <string>functionButton</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>

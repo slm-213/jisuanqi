@@ -46,6 +46,9 @@ void MainWindow::connectButtons()
     // 连接括号按钮
     connect(ui->leftParenButton, &QPushButton::clicked, this, &MainWindow::onParenClicked);
     connect(ui->rightParenButton, &QPushButton::clicked, this, &MainWindow::onParenClicked);
+    
+    // 连接平方按钮
+    connect(ui->squareButton, &QPushButton::clicked, this, &MainWindow::onSquareClicked);
 }
 
 void MainWindow::onNumberClicked()//处理数字按钮点击的槽函数，sender为信号发送者，信号为clicked，MainWindow为信号接受者
@@ -241,4 +244,72 @@ QString MainWindow::convertDisplayToExpression(const QString& display)//显示�
     expression.replace("÷", "/");
     
     return expression;
+}
+
+void MainWindow::onSquareClicked()//平方功能
+{
+    try {
+        // 如果刚完成计算，直接对结果求平方
+        if (justCalculated) {
+            QString expression = convertDisplayToExpression(currentExpression);
+            double value = evaluator.evaluate(expression.toStdString());
+            double result = value * value;
+            
+            // 格式化结果
+            QString resultStr;
+            if (result == static_cast<long long>(result)) {
+                resultStr = QString::number(static_cast<long long>(result));
+            } else {
+                resultStr = QString::number(result, 'g', 10);//小数格式
+            }
+            
+            currentExpression = resultStr;//更新表达式
+            justCalculated = true;//设置状态
+        } else {
+            // 如果当前表达式不为空且不是以操作符结尾，则立即计算平方
+            if (!currentExpression.isEmpty() && 
+                !currentExpression.endsWith("+") && 
+                !currentExpression.endsWith("-") && 
+                !currentExpression.endsWith("*") && 
+                !currentExpression.endsWith("/")) {
+                
+                // 获取最后一个数字并计算其平方
+                QString lastNumber = "";
+                for (int i = currentExpression.length() - 1; i >= 0; --i) {
+                    QChar c = currentExpression.at(i);
+                    if (c.isDigit() || c == '.') {
+                        lastNumber = c + lastNumber;
+                    } else {
+                        break;
+                    }
+                }
+                
+                if (!lastNumber.isEmpty()) {
+                    // 计算平方
+                    double value = lastNumber.toDouble();
+                    double result = value * value;
+                    
+                    // 替换最后一个数字为平方结果
+                    QString beforeNumber = currentExpression.left(currentExpression.length() - lastNumber.length());
+                    QString resultStr;
+                    if (result == static_cast<long long>(result)) {
+                        resultStr = QString::number(static_cast<long long>(result));
+                    } else {
+                        resultStr = QString::number(result, 'g', 10);
+                    }
+                    
+                    currentExpression = beforeNumber + resultStr;
+                } else {
+                    showError("无法识别要计算平方的数字");
+                    return;
+                }
+            } else {
+                showError("无法对空表达式或操作符求平方");
+                return;
+            }
+        }
+        updateDisplay();
+    } catch (const std::exception& e) {
+        showError(QString("平方计算错误: %1").arg(e.what()));
+    }
 }

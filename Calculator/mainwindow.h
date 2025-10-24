@@ -30,6 +30,7 @@ private slots:
     void onBackspaceClicked();
     void onDecimalClicked();
     void onParenClicked();
+    void onSquareClicked();
 
 private:
     Ui::MainWindow *ui;

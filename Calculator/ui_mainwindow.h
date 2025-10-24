@@ -41,6 +41,7 @@ public:
     QPushButton *decimalButton;
     QPushButton *equalsButton;
     QPushButton *addButton;
+    QPushButton *squareButton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -235,6 +236,12 @@ public:
         addButton->setText(QString::fromUtf8("+"));
 
         buttonLayout->addWidget(addButton, 4, 3, 1, 1);
+
+        squareButton = new QPushButton(centralwidget);
+        squareButton->setObjectName(QString::fromUtf8("squareButton"));
+        squareButton->setText(QString::fromUtf8("x²"));
+
+        buttonLayout->addWidget(squareButton, 5, 0, 1, 1);
 
 
         verticalLayout->addLayout(buttonLayout);
